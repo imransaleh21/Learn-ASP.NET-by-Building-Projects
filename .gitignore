@@ -1,0 +1,11 @@
+# This is the directory to be ignored by Git
+**/bin/
+**/obj/
+**/Debug/
+
+# This is the file to be ignored by Git
+*.user
+*.suo
+*.log
+*.vs/
+*.vscode/
