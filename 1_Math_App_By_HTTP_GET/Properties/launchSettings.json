@@ -9,11 +9,11 @@
     }
   },
   "profiles": {
-    "http": {
+    "Math App": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5220",
+      "applicationUrl": "http://localhost:1025",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

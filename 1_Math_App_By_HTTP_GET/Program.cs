@@ -7,6 +7,7 @@ app.Run(async (HttpContext context) =>
 {
     context.Response.ContentType = "text/Number";
     bool flag = false;
+    List<string> error = new List<string>();
     if (context.Request.Method == HttpMethods.Get)
     {
         int num1 = 0, num2 = 0;
@@ -17,15 +18,13 @@ app.Run(async (HttpContext context) =>
             string firstNumber = context.Request.Query["firstNumber"].ToString() ?? string.Empty;
             if (!int.TryParse(firstNumber, out num1))
             {
-                context.Response.StatusCode = 400;
-                await context.Response.WriteAsync("Invalid value for firstNumber.\n");
+                error.Add("Invalid value for firstNumber.\n");
                 flag = true;
             }
         }
         else
         {
-            context.Response.StatusCode = 400;
-            await context.Response.WriteAsync("Invalid input for 'firstNumber'\n");
+            error.Add("Invalid input for 'firstNumber'\n");
             flag = true;
         }
 
@@ -34,16 +33,15 @@ app.Run(async (HttpContext context) =>
             string secondNumber = context.Request.Query["secondNumber"].ToString() ?? string.Empty;
             if (!int.TryParse(secondNumber, out num2))
             {
-                context.Response.StatusCode = 400;
-                await context.Response.WriteAsync("Invalid value for secondNumber.\n");
+                error.Add("Invalid value for secondNumber.\n");
                 flag = true;
             }
 
         }
         else
         {
-            context.Response.StatusCode = 400;
-            await context.Response.WriteAsync("Invalid input for 'secondNumber'\n");
+
+            error.Add("Invalid input for 'secondNumber'\n");
             flag = true;
         }
 
@@ -85,24 +83,32 @@ app.Run(async (HttpContext context) =>
                 }
                 else
                 {
-                    context.Response.StatusCode = 400;
-                    await context.Response.WriteAsync("Division by zero is not allowed.\n");
+                    error.Add("Division by zero is not allowed.\n");
+                    flag = true;
                 }
             }
         }
         else
         {
-            context.Response.StatusCode = 400;
-            await context.Response.WriteAsync("Invalid input for operation. Supported operations are: add, subtract, multiply, divide.\n");
+            error.Add("Invalid input for operation. Supported operations are: add, subtract, multiply, divide.\n");
+            flag = true;
         }
 
     }
     else
     {
-        context.Response.StatusCode = 400;
-        await context.Response.WriteAsync("Unsupported HTTP method.\n");
+        error.Add("Unsupported HTTP method.\n");
+        flag = true;
     }
-    //if(flag) context.Response.StatusCode = 400;
+    if (flag)
+    {
+        context.Response.StatusCode = 400;
+        await context.Response.WriteAsync("Error: \n" + string.Join("", error));
+        //foreach (var err in error)
+        //{
+        //    await context.Response.WriteAsync(err);
+        //}
+    }
 });
 
 app.Run();
