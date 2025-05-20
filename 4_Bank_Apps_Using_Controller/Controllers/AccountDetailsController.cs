@@ -53,7 +53,7 @@ namespace _4_Bank_Apps_Using_Controller.Controllers
         [Route("account-statements")]
         public IActionResult AccountStatement()
         {
-            return Content("Account Statement");
+            return File("/account.pdf", "application/pdf");
         }
 
         [Route("account-balance/{accountId?}")]
@@ -66,7 +66,7 @@ namespace _4_Bank_Apps_Using_Controller.Controllers
 
             else if (accounts.TryGetValue(accountId, out var account))
             {
-                return Content(account.Balance.ToString(), "application/text");
+                return Content(account.Balance.ToString());
             }
             else
             {
