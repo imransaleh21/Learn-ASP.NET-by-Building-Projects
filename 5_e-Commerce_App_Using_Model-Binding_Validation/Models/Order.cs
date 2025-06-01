@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 using _5_e_Commerce_App_Using_Model_Binding_Validation.CustomValidations;
+using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
 
 namespace _5_e_Commerce_App_Using_Model_Binding_Validation.Models
 {
     public class Order
     {
         [BindNever]
+        [JsonIgnore]
         public int? OrderNo { get; set; }
 
         public Order()
@@ -16,7 +19,9 @@ namespace _5_e_Commerce_App_Using_Model_Binding_Validation.Models
             OrderNo = random.Next(1, 99999);
         }
 
-        [Required(ErrorMessage = "{0} is required.")]
+        [Display(Name = "Order Date")]
+        [Required(ErrorMessage = "{0} is can't be blank.")]
+        [ValidOrderDate]
         public DateTime? OrderDate { get; set; }
 
         [Required(ErrorMessage = "{0} is required.")]
@@ -25,11 +30,6 @@ namespace _5_e_Commerce_App_Using_Model_Binding_Validation.Models
 
         [Required(ErrorMessage = "{0} is required.")]
         public List<Product>? Products { get; set; } = new();
-
-        public override string ToString()
-        {
-            return $"OrderNumber: {OrderNo}";
-        }
     }
 
 }
